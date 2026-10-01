@@ -1,0 +1,11 @@
+# raw data (CC BY-NC-SA, downloaded by scripts/get_data.sh)
+data/
+# derived tables are rebuilt by run_all.sh; keep only the small JSON results
+out/*
+!out/*.json
+# LaTeX build by-products
+latex/*.log
+latex/*.aux
+latex/*.out
+__pycache__/
+*.pyc

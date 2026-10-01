@@ -1,0 +1,33 @@
+% ---------------------------------------------------------------------------
+% Figure 1 + Table 1 side by side, each with its caption, in two minipages of
+% exactly the same height. The table (caption on top) sets the height; the figure
+% box gets whatever height its own caption leaves over, and the image is centred
+% in that box. Both captions are typeset once into boxes, so what is measured is
+% exactly what is placed.
+% Needs: graphicx, booktabs, caption. Files: table1.tex, figure1.pdf.
+% The log prints "FIGBOX: width=..., height=..." -- re-render figure1.pdf at that
+% size (src/fig1.py <width_pt> <height_pt>) if the template changes the box size.
+% ---------------------------------------------------------------------------
+\newsavebox{\tblbox}\newsavebox{\figcapbox}
+\newlength{\tblH}\newlength{\figcapH}\newlength{\figH}
+\newcommand{\figW}{0.37\linewidth}
+\newcommand{\tblW}{0.61\linewidth}
+\newcommand{\figcaptext}{Who keeps beating their points. Next-season wins above the points-based expectation by quintile
+of UPR+ and of the official rating (508 player-seasons; adjusted for points won, ranking, age, volume, season; 95\% CI).}
+\begin{figure}[b]
+\footnotesize
+\sbox{\tblbox}{\begin{minipage}[b]{\tblW}
+\input{table1}
+\par\vspace{0pt}\end{minipage}}%
+\setlength{\tblH}{\dimexpr\ht\tblbox+\dp\tblbox\relax}%
+\sbox{\figcapbox}{\begin{minipage}[t]{\figW}\captionsetup{position=below}\captionof{figure}{\figcaptext}\label{fig:quint}\end{minipage}}%
+\setlength{\figcapH}{\dimexpr\ht\figcapbox+\dp\figcapbox\relax}%
+\setlength{\figH}{\dimexpr\tblH-\figcapH\relax}%
+\typeout{FIGBOX: width=\the\dimexpr\figW\relax, height=\the\figH, total=\the\tblH}%
+\begin{minipage}[b][\tblH][t]{\figW}
+\parbox[b][\figH][c]{\linewidth}{\centering
+  \includegraphics[width=\linewidth,height=\figH,keepaspectratio]{figure1.pdf}}\par\nointerlineskip
+\usebox{\figcapbox}
+\end{minipage}\hfill
+\usebox{\tblbox}
+\end{figure}
